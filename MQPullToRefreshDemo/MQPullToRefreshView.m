@@ -28,13 +28,13 @@
         self.backgroundColor = [UIColor redColor];
         _scrollView = scrollView;
         _triggerDistance = 60;
-        _state = MQPullToRefreshStateRefreshDone;
+        _state = MQPullToRefreshStateNormal;
     }
     return self;
 }
 
 - (void)refreshDone {
-    self.state = MQPullToRefreshStateRefreshDone;
+    self.state = MQPullToRefreshStateNormal;
 }
 
 - (void)setShow:(BOOL)show {
@@ -61,8 +61,15 @@
     if (_state != state) {
         _state = state;
         switch (state) {
-            case MQPullToRefreshStatePulling:
-                NSLog(@"正在下拉");
+            case MQPullToRefreshStateNormal:
+                NSLog(@"回复正常状态");
+                [UIView animateWithDuration:0.3
+                                      delay:0
+                                    options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState
+                                 animations:^{
+                                     _scrollView.contentInset = UIEdgeInsetsZero;
+                                 }
+                                 completion:NULL];
                 break;
             case MQPullToRefreshStateWillRefresh:
                 NSLog(@"进入触发刷新区域");
@@ -72,15 +79,6 @@
                 NSLog(@"正在刷新");
                 _actionHandleBlock();
                 break;
-            case MQPullToRefreshStateRefreshDone:
-                _scrollView.contentOffset = CGPointMake(0, -_triggerDistance);
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    if (!_scrollView.dragging) {
-                        _scrollView.contentOffset = CGPointMake(0, 0);
-                    }
-                });
-                NSLog(@"刷新完毕");
-                break;
             default:
                 break;
         }
@@ -89,7 +87,6 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"contentOffset"]) {
-//        NSLog(@"  contentOffset = %@", NSStringFromCGPoint([[change valueForKey:NSKeyValueChangeNewKey] CGPointValue]));
         [self scrollViewDidScroll:[[change valueForKey:NSKeyValueChangeNewKey] CGPointValue]];
     }
     if ([keyPath isEqualToString:@"contentSize"]) {
@@ -105,28 +102,31 @@
     CGFloat beyondDistance;
     if (_type == MQPullToRefreshTypeTop) {
         beyondDistance = ABS(offset.y);
-//        NSLog(@"%f", beyondDistance);
-        if (_state == MQPullToRefreshStateRefreshDone &&
-            beyondDistance < _triggerDistance) {
-            self.state = MQPullToRefreshStatePulling;
+        //  当前在刷新
+        if (_state == MQPullToRefreshStateRefreshing) {
+            CGFloat offsetY;
+            offsetY = MIN(beyondDistance, _triggerDistance);
+            _scrollView.contentInset = UIEdgeInsetsMake(offsetY, 0, 0, 0);
         }
-        if (_state == MQPullToRefreshStatePulling &&
-            beyondDistance < _triggerDistance) {
+        else {
+            if (_state == MQPullToRefreshStateWillRefresh &&
+                !_scrollView.dragging) {
+                self.state = MQPullToRefreshStateRefreshing;        //  刷新
+            }
+            else if (_state == MQPullToRefreshStateNormal &&
+                     beyondDistance > _triggerDistance &&
+                     _scrollView.dragging) {
+                self.state = MQPullToRefreshStateWillRefresh;       //  将刷新
+            }
+            else if(_state != MQPullToRefreshStateNormal &&
+                    beyondDistance < _triggerDistance) {
+                self.state = MQPullToRefreshStateNormal;            //  正常
+            }
         }
-        if (_state == MQPullToRefreshStatePulling &&
-            beyondDistance > _triggerDistance &&
-            _scrollView.dragging) {
-            self.state = MQPullToRefreshStateWillRefresh;
-        }
-        if (_state == MQPullToRefreshStateWillRefresh &&
-            !_scrollView.dragging) {
-            self.state = MQPullToRefreshStateRefreshing;
-        }
-        if (_state == MQPullToRefreshStateWillRefresh &&
-            beyondDistance < _triggerDistance &&
-            _scrollView.dragging) {
-            self.state = MQPullToRefreshStatePulling;
-        }
+        
+    }
+    else {
+    
     }
 }
 
@@ -134,6 +134,9 @@
     [super layoutSubviews];
     if (self.type == MQPullToRefreshTypeTop) {
         self.frame = CGRectMake(0, -_triggerDistance, _scrollView.frame.size.width, _triggerDistance);
+    }
+    else {
+    
     }
 }
 

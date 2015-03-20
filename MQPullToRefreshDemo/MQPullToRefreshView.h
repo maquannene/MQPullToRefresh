@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, MQPullToRefreshState) {
-    MQPullToRefreshStatePulling,                    //  pulling
+    MQPullToRefreshStateNormal,                     //  normal
     MQPullToRefreshStateWillRefresh,                //  will and can refresh
-    MQPullToRefreshStateRefreshing,                 //  refreshing
-    MQPullToRefreshStateRefreshDone                 //  refreshing done
+    MQPullToRefreshStateRefreshing                  //  refreshing
+//    MQPullToRefreshStateRefreshDone                 //  refreshing done
 };
 
 typedef NS_ENUM(NSInteger, MQPullToRefreshType) {
