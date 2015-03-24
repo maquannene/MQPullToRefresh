@@ -16,16 +16,24 @@
     BOOL _show;
 }
 
+@property (retain, nonatomic) NSMutableArray *customViewArray;
+
 @end
 
 @implementation MQPullToRefreshView
 
 @synthesize show = _show;
 
+- (void)dealloc {
+    [_customViewArray release];
+    [super dealloc];
+}
+
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView {
     self = [super init];
     if (self) {
         self.backgroundColor = [UIColor redColor];
+        _customViewArray = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
         _scrollView = scrollView;
         _triggerDistance = 60;
         _state = MQPullToRefreshStateNormal;
@@ -33,11 +41,31 @@
     return self;
 }
 
+#pragma mark -
+#pragma mark - Public
+- (void)customRefreshView:(UIView *)view forState:(MQPullToRefreshState)state {
+    [_customViewArray replaceObjectAtIndex:(NSInteger)state withObject:view];
+    [self setNeedsLayout];
+}
+
+- (void)refreshSucceed:(BOOL)isSucceed duration:(CGFloat)duration {
+    if (isSucceed) {
+        self.state = MQPullToRefreshStateRefreshSucceed;
+    }
+    else {
+        self.state = MQPullToRefreshStateRefreshFailed;
+    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self refreshDone];
+    });
+}
+
 - (void)refreshDone {
     self.state = MQPullToRefreshStateNormal;
 }
 
 - (void)setShow:(BOOL)show {
+    self.hidden = !show;
     if (_show != show) {
         _show = show;
         if (_show) {
@@ -58,11 +86,12 @@
 }
 
 - (void)setState:(MQPullToRefreshState)state {
+    
     if (_state != state) {
         _state = state;
         switch (state) {
             case MQPullToRefreshStateNormal:
-                NSLog(@"回复正常状态");
+                NSLog(@"recover to normal");
                 [UIView animateWithDuration:0.3
                                       delay:0
                                     options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState
@@ -72,16 +101,33 @@
                                  completion:NULL];
                 break;
             case MQPullToRefreshStateWillRefresh:
-                NSLog(@"进入触发刷新区域");
+                NSLog(@"enter refresh area");
                 break;
             case MQPullToRefreshStateRefreshing:
-        
-                NSLog(@"正在刷新");
-                _actionHandleBlock();
+                [UIView animateWithDuration:0.3
+                                      delay:0
+                                    options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState
+                                 animations:^{
+                                     _scrollView.contentInset = UIEdgeInsetsMake(_triggerDistance, 0, 0, 0);
+                                 }
+                                 completion:NULL];
+                
+                NSLog(@"is refreshing now");
+                if (_actionHandleBlock) {
+                    _actionHandleBlock();
+                }
+                break;
+            case MQPullToRefreshStateRefreshFailed:
+                NSLog(@"frefresh faild");
+            break;
+            case MQPullToRefreshStateRefreshSucceed:
+                NSLog(@"frefresh succced");
                 break;
             default:
                 break;
         }
+        //  trigger layoutSubviews and change refreshview
+        [self setNeedsLayout];
     }
 }
 
@@ -123,7 +169,6 @@
                 self.state = MQPullToRefreshStateNormal;            //  正常
             }
         }
-        
     }
     else {
     
@@ -136,8 +181,24 @@
         self.frame = CGRectMake(0, -_triggerDistance, _scrollView.frame.size.width, _triggerDistance);
     }
     else {
-    
+        
     }
+    [self changeCustomView];
+}
+
+- (void)changeCustomView {
+    UIView *view = _customViewArray[_state];
+    if (![view isKindOfClass:[UIView class]]) {
+        return;
+    }
+    for (UIView *subView in self.subviews) {
+        [subView removeFromSuperview];
+    }
+    view.frame = CGRectMake((self.frame.size.width - view.frame.size.width) / 2,
+                            self.frame.size.height - view.frame.size.height,
+                            view.frame.size.width,
+                            view.frame.size.height);
+    [self addSubview:view];
 }
 
 @end

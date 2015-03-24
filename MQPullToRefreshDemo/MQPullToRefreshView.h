@@ -11,8 +11,9 @@
 typedef NS_ENUM(NSInteger, MQPullToRefreshState) {
     MQPullToRefreshStateNormal,                     //  normal
     MQPullToRefreshStateWillRefresh,                //  will and can refresh
-    MQPullToRefreshStateRefreshing                  //  refreshing
-//    MQPullToRefreshStateRefreshDone                 //  refreshing done
+    MQPullToRefreshStateRefreshing,                 //  refreshing
+    MQPullToRefreshStateRefreshSucceed,             //  not must necessary
+    MQPullToRefreshStateRefreshFailed               //  not must necessary
 };
 
 typedef NS_ENUM(NSInteger, MQPullToRefreshType) {
@@ -27,12 +28,14 @@ typedef void (^ActionHandleBlock)(void);
 
 @property (assign, nonatomic) MQPullToRefreshType type;                 //  top or bottom
 @property (copy, nonatomic) ActionHandleBlock actionHandleBlock;
-@property (assign, nonatomic) BOOL show;
+@property (assign, nonatomic) BOOL show;            
 
 @property (assign, nonatomic) MQPullToRefreshState state;               //  current view state
 @property (assign, nonatomic) CGFloat triggerDistance;                  //  pull distance of trigger refresh. default: 60
 
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView;
+- (void)customRefreshView:(UIView *)view forState:(MQPullToRefreshState)state;
+- (void)refreshSucceed:(BOOL)isSucceed duration:(CGFloat)duration;
 - (void)refreshDone;
 
 @end

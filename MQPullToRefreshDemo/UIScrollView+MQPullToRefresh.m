@@ -30,6 +30,7 @@ static char UIScrollViewPullToRefreshView;
         self.pullToRefreshView.actionHandleBlock = actionHandler;
         self.pullToRefreshView.show = YES;
         [self addSubview:self.pullToRefreshView];
+        [self.pullToRefreshView setNeedsLayout];
     }
 }
 
