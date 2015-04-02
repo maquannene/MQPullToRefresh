@@ -11,8 +11,9 @@
     BOOL showPullToRefreshView;             是否开启刷新界面
  
     //  一个方法添加刷新handle
-    - (void)addActionHandlerOnPullToRefreshView:(void (^) (void))actionHandler
-                                           type:(MQPullToRefreshType)type;
+    - (void)addActionHandlerOnPullToRefreshView:(MQPullToRefreshType)type
+                                triggerDistance:(NSInteger)triggerDistance
+                           refreshCompleteBlock:(void (^) (void))complete;
  */
 
 #import <UIKit/UIKit.h>
@@ -25,7 +26,13 @@
 @property (retain, nonatomic, readonly) MQPullToRefreshView *pullToRefreshView;
 @property (assign, nonatomic) BOOL showPullToRefreshView;
 
-- (void)addActionHandlerOnPullToRefreshView:(void (^) (void))actionHandler
-                                       type:(MQPullToRefreshType)type;
+/**
+ *  para1:  top pull down or bottom pull up
+ *  para2:  distance of trigger refresh
+ *  para3:  trigger requestRefresh block
+ */
+- (void)addActionHandlerOnPullToRefreshView:(MQPullToRefreshType)type
+                            triggerDistance:(NSInteger)triggerDistance
+                        requestRefreshBlock:(void (^) (void))request;
 
 @end

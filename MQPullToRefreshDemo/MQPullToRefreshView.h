@@ -12,8 +12,8 @@ typedef NS_ENUM(NSInteger, MQPullToRefreshState) {
     MQPullToRefreshStateNormal,                     //  normal
     MQPullToRefreshStateWillRefresh,                //  will and can refresh
     MQPullToRefreshStateRefreshing,                 //  refreshing
-    MQPullToRefreshStateRefreshSucceed,             //  not must necessary
-    MQPullToRefreshStateRefreshFailed               //  not must necessary
+    MQPullToRefreshStateRefreshSucceed,             //  not necessary
+    MQPullToRefreshStateRefreshFailed               //  not necessary
 };
 
 typedef NS_ENUM(NSInteger, MQPullToRefreshType) {
@@ -21,20 +21,32 @@ typedef NS_ENUM(NSInteger, MQPullToRefreshType) {
     MQPullToRefreshTypeBottom
 };
 
+@class MQPullToRefreshView;
+
+@protocol MQPullToRefreshViewDelegate <NSObject>
+
+@optional
+- (void)pullToRefreshView:(MQPullToRefreshView *)refreshView willChangeState:(MQPullToRefreshState)state;
+- (void)pullToRefreshView:(MQPullToRefreshView *)refreshView didChangeState:(MQPullToRefreshState)state;
+
+@end
+
 typedef void (^ActionHandleBlock)(void);
 
 @interface MQPullToRefreshView : UIView
 
-
 @property (assign, nonatomic) MQPullToRefreshType type;                 //  top or bottom
-@property (copy, nonatomic) ActionHandleBlock actionHandleBlock;
-@property (assign, nonatomic) BOOL show;            
+@property (copy, nonatomic) ActionHandleBlock requestRefreshBlock;      //  trigger requestRefresh
+@property (assign, nonatomic) CGFloat triggerDistance;                  //  pull distance of trigger refresh. default: 60
 
 @property (assign, nonatomic) MQPullToRefreshState state;               //  current view state
-@property (assign, nonatomic) CGFloat triggerDistance;                  //  pull distance of trigger refresh. default: 60
+@property (assign, nonatomic) BOOL show;
+@property (assign, nonatomic) id<MQPullToRefreshViewDelegate> delegate;
 
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView;
 - (void)customRefreshView:(UIView *)view forState:(MQPullToRefreshState)state;
+
+//  finish refresh
 - (void)refreshSucceed:(BOOL)isSucceed duration:(CGFloat)duration;
 - (void)refreshDone;
 

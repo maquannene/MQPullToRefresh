@@ -34,9 +34,11 @@
     if (self) {
         self.backgroundColor = [UIColor redColor];
         _customViewArray = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
-        _scrollView = scrollView;
+        _type = MQPullToRefreshTypeTop;
         _triggerDistance = 60;
         _state = MQPullToRefreshStateNormal;
+        _show = NO;
+        _scrollView = scrollView;
     }
     return self;
 }
@@ -86,48 +88,49 @@
 }
 
 - (void)setState:(MQPullToRefreshState)state {
-    
     if (_state != state) {
+        if ([_delegate respondsToSelector:@selector(pullToRefreshView:willChangeState:)]) {
+            [_delegate pullToRefreshView:self willChangeState:state];
+        }
         _state = state;
         switch (state) {
             case MQPullToRefreshStateNormal:
-                NSLog(@"recover to normal");
                 [UIView animateWithDuration:0.3
                                       delay:0
-                                    options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState
+                                    options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
                                  animations:^{
                                      _scrollView.contentInset = UIEdgeInsetsZero;
                                  }
                                  completion:NULL];
                 break;
             case MQPullToRefreshStateWillRefresh:
-                NSLog(@"enter refresh area");
+            
                 break;
             case MQPullToRefreshStateRefreshing:
                 [UIView animateWithDuration:0.3
                                       delay:0
-                                    options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState
+                                    options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
                                  animations:^{
                                      _scrollView.contentInset = UIEdgeInsetsMake(_triggerDistance, 0, 0, 0);
                                  }
                                  completion:NULL];
-                
-                NSLog(@"is refreshing now");
-                if (_actionHandleBlock) {
-                    _actionHandleBlock();
+                if (_requestRefreshBlock) {
+                    _requestRefreshBlock();
                 }
                 break;
             case MQPullToRefreshStateRefreshFailed:
-                NSLog(@"frefresh faild");
-            break;
+                break;
             case MQPullToRefreshStateRefreshSucceed:
-                NSLog(@"frefresh succced");
                 break;
             default:
                 break;
         }
-        //  trigger layoutSubviews and change refreshview
+        //  trigger layoutSubviews and change refreshview at once
         [self setNeedsLayout];
+        [self layoutIfNeeded];
+        if ([_delegate respondsToSelector:@selector(pullToRefreshView:didChangeState:)]) {
+            [_delegate pullToRefreshView:self didChangeState:state];
+        }
     }
 }
 
@@ -136,10 +139,10 @@
         [self scrollViewDidScroll:[[change valueForKey:NSKeyValueChangeNewKey] CGPointValue]];
     }
     if ([keyPath isEqualToString:@"contentSize"]) {
-        NSLog(@"  contentSize = %@", NSStringFromCGSize([[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue]));
+//        NSLog(@"  contentSize = %@", NSStringFromCGSize([[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue]));
     }
     if ([keyPath isEqualToString:@"frame"]) {
-        NSLog(@"  frame = %@", NSStringFromCGRect([[change valueForKey:NSKeyValueChangeNewKey] CGRectValue]));
+//        NSLog(@"  frame = %@", NSStringFromCGRect([[change valueForKey:NSKeyValueChangeNewKey] CGRectValue]));
     }
 }
 

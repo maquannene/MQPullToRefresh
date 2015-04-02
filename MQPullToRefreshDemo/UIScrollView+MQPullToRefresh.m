@@ -17,18 +17,21 @@ static char UIScrollViewPullToRefreshView;
 - (MQPullToRefreshView *)pullToRefreshView {
     MQPullToRefreshView *pullToRefreshView = objc_getAssociatedObject(self, &UIScrollViewPullToRefreshView);
     if (!pullToRefreshView) {
-        MQPullToRefreshView *pullToRefreshView = [[MQPullToRefreshView alloc] initWithScrollView:self];
+        pullToRefreshView = [[MQPullToRefreshView alloc] initWithScrollView:self];
         objc_setAssociatedObject(self, &UIScrollViewPullToRefreshView, pullToRefreshView, OBJC_ASSOCIATION_RETAIN);
         [pullToRefreshView release];
     }
     return pullToRefreshView;
 }
 
-- (void)addActionHandlerOnPullToRefreshView:(void (^) (void))actionHandler type:(MQPullToRefreshType)type {
+- (void)addActionHandlerOnPullToRefreshView:(MQPullToRefreshType)type
+                            triggerDistance:(NSInteger)triggerDistance
+                        requestRefreshBlock:(void (^) (void))request
+{
     if (type == MQPullToRefreshTypeTop) {
         self.pullToRefreshView.type = type;
-        self.pullToRefreshView.actionHandleBlock = actionHandler;
-        self.pullToRefreshView.show = YES;
+        self.pullToRefreshView.triggerDistance = (triggerDistance > 0) ? triggerDistance : 60;
+        self.pullToRefreshView.requestRefreshBlock = request;
         [self addSubview:self.pullToRefreshView];
         [self.pullToRefreshView setNeedsLayout];
     }
