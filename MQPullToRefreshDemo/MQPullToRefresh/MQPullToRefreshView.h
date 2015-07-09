@@ -44,10 +44,15 @@ typedef void (^ActionHandleBlock)(void);
 @property (assign, nonatomic) id<MQPullToRefreshViewDelegate> delegate;
 
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView;
+
+//  custom refresh View according to different state
 - (void)customRefreshView:(UIView *)view forState:(MQPullToRefreshState)state;
 
-//  finish refresh
+//  force refresh: enter MQPullToRefreshStateRefreshing
+- (void)refreshing;
+//  refresh finish: enter MQPullToRefreshStateRefreshSucceed or MQPullToRefreshStateRefreshFailed
 - (void)refreshSucceed:(BOOL)isSucceed duration:(CGFloat)duration;
+//  refresh done: enter MQPullToRefreshStateNormal
 - (void)refreshDone;
 
 @end

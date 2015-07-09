@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D40F84211B4EA579004FD250 /* MQPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = D40F841E1B4EA579004FD250 /* MQPullToRefreshView.m */; };
-		D40F84221B4EA579004FD250 /* UIScrollView+MQPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = D40F84201B4EA579004FD250 /* UIScrollView+MQPullToRefresh.m */; };
+		D40F842A1B4EAE78004FD250 /* MQPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = D40F84271B4EAE78004FD250 /* MQPullToRefreshView.m */; };
+		D40F842B1B4EAE78004FD250 /* UIScrollView+MQPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = D40F84291B4EAE78004FD250 /* UIScrollView+MQPullToRefresh.m */; };
 		D4B77B811ABAE2370064171D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B77B801ABAE2370064171D /* main.m */; };
 		D4B77B841ABAE2370064171D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B77B831ABAE2370064171D /* AppDelegate.m */; };
 		D4B77B871ABAE2370064171D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B77B861ABAE2370064171D /* ViewController.m */; };
@@ -29,10 +29,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D40F841D1B4EA579004FD250 /* MQPullToRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPullToRefreshView.h; sourceTree = "<group>"; };
-		D40F841E1B4EA579004FD250 /* MQPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPullToRefreshView.m; sourceTree = "<group>"; };
-		D40F841F1B4EA579004FD250 /* UIScrollView+MQPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MQPullToRefresh.h"; sourceTree = "<group>"; };
-		D40F84201B4EA579004FD250 /* UIScrollView+MQPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MQPullToRefresh.m"; sourceTree = "<group>"; };
+		D40F84261B4EAE78004FD250 /* MQPullToRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPullToRefreshView.h; sourceTree = "<group>"; };
+		D40F84271B4EAE78004FD250 /* MQPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPullToRefreshView.m; sourceTree = "<group>"; };
+		D40F84281B4EAE78004FD250 /* UIScrollView+MQPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MQPullToRefresh.h"; sourceTree = "<group>"; };
+		D40F84291B4EAE78004FD250 /* UIScrollView+MQPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MQPullToRefresh.m"; sourceTree = "<group>"; };
 		D4B77B7B1ABAE2370064171D /* MQPullToRefreshDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MQPullToRefreshDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4B77B7F1ABAE2370064171D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4B77B801ABAE2370064171D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -66,15 +66,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D40F841C1B4EA579004FD250 /* MQPushToRefresh */ = {
+		D40F84251B4EAE78004FD250 /* MQPullToRefresh */ = {
 			isa = PBXGroup;
 			children = (
-				D40F841D1B4EA579004FD250 /* MQPullToRefreshView.h */,
-				D40F841E1B4EA579004FD250 /* MQPullToRefreshView.m */,
-				D40F841F1B4EA579004FD250 /* UIScrollView+MQPullToRefresh.h */,
-				D40F84201B4EA579004FD250 /* UIScrollView+MQPullToRefresh.m */,
+				D40F84261B4EAE78004FD250 /* MQPullToRefreshView.h */,
+				D40F84271B4EAE78004FD250 /* MQPullToRefreshView.m */,
+				D40F84281B4EAE78004FD250 /* UIScrollView+MQPullToRefresh.h */,
+				D40F84291B4EAE78004FD250 /* UIScrollView+MQPullToRefresh.m */,
 			);
-			path = MQPushToRefresh;
+			path = MQPullToRefresh;
 			sourceTree = "<group>";
 		};
 		D4B77B721ABAE2370064171D = {
@@ -98,7 +98,7 @@
 		D4B77B7D1ABAE2370064171D /* MQPullToRefreshDemo */ = {
 			isa = PBXGroup;
 			children = (
-				D40F841C1B4EA579004FD250 /* MQPushToRefresh */,
+				D40F84251B4EAE78004FD250 /* MQPullToRefresh */,
 				D4B77B821ABAE2370064171D /* AppDelegate.h */,
 				D4B77B831ABAE2370064171D /* AppDelegate.m */,
 				D4B77B851ABAE2370064171D /* ViewController.h */,
@@ -237,8 +237,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D40F84221B4EA579004FD250 /* UIScrollView+MQPullToRefresh.m in Sources */,
-				D40F84211B4EA579004FD250 /* MQPullToRefreshView.m in Sources */,
+				D40F842B1B4EAE78004FD250 /* UIScrollView+MQPullToRefresh.m in Sources */,
+				D40F842A1B4EAE78004FD250 /* MQPullToRefreshView.m in Sources */,
 				D4B77B871ABAE2370064171D /* ViewController.m in Sources */,
 				D4B77B841ABAE2370064171D /* AppDelegate.m in Sources */,
 				D4B77B811ABAE2370064171D /* main.m in Sources */,

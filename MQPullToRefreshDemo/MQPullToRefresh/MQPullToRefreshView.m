@@ -50,6 +50,12 @@
     [self setNeedsLayout];
 }
 
+- (void)refreshing {
+    _state = MQPullToRefreshStateWillRefresh;
+    [_scrollView setContentOffset:CGPointMake(0, -_triggerDistance) animated:YES];
+    self.state = MQPullToRefreshStateRefreshing;
+}
+
 - (void)refreshSucceed:(BOOL)isSucceed duration:(CGFloat)duration {
     if (isSucceed) {
         self.state = MQPullToRefreshStateRefreshSucceed;
@@ -66,73 +72,7 @@
     self.state = MQPullToRefreshStateNormal;
 }
 
-- (void)setShow:(BOOL)show {
-    self.hidden = !show;
-    if (_show != show) {
-        _show = show;
-        if (_show) {
-            [_scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
-            [_scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
-            [_scrollView addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
-        }
-        else {
-            [_scrollView removeObserver:self forKeyPath:@"contentOffset"];
-            [_scrollView removeObserver:self forKeyPath:@"contentSize"];
-            [_scrollView removeObserver:self forKeyPath:@"frame"];
-        }
-    }
-}
-
-- (BOOL)show {
-    return _show;
-}
-
-- (void)setState:(MQPullToRefreshState)state {
-    if (_state != state) {
-        if ([_delegate respondsToSelector:@selector(pullToRefreshView:willChangeState:)]) {
-            [_delegate pullToRefreshView:self willChangeState:state];
-        }
-        _state = state;
-        switch (state) {
-            case MQPullToRefreshStateNormal:
-                [UIView animateWithDuration:0.3
-                                      delay:0
-                                    options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
-                                 animations:^{
-                                     _scrollView.contentInset = UIEdgeInsetsZero;
-                                 }
-                                 completion:NULL];
-                break;
-            case MQPullToRefreshStateWillRefresh:
-            
-                break;
-            case MQPullToRefreshStateRefreshing:
-                [UIView animateWithDuration:0.3
-                                      delay:0
-                                    options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
-                                 animations:^{
-                                     _scrollView.contentInset = UIEdgeInsetsMake(_triggerDistance, 0, 0, 0);
-                                 }
-                                 completion:NULL];
-                if (_requestRefreshBlock) {
-                    _requestRefreshBlock();
-                }
-                break;
-            case MQPullToRefreshStateRefreshFailed:
-                break;
-            case MQPullToRefreshStateRefreshSucceed:
-                break;
-            default:
-                break;
-        }
-        //  trigger layoutSubviews and change refreshview at once
-        [self setNeedsLayout];
-        [self layoutIfNeeded];
-        if ([_delegate respondsToSelector:@selector(pullToRefreshView:didChangeState:)]) {
-            [_delegate pullToRefreshView:self didChangeState:state];
-        }
-    }
-}
+#pragma mark - Private
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"contentOffset"]) {
@@ -203,6 +143,85 @@
                             view.frame.size.width,
                             view.frame.size.height);
     [self addSubview:view];
+}
+
+- (void)adjusetContentInset:(UIEdgeInsets)contentInset animated:(BOOL)animated completion:(void (^)(BOOL finished))completion{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             _scrollView.contentInset = contentInset;
+                             [_scrollView setContentOffset:CGPointMake(0, -contentInset.top) animated:NO];
+                         }
+                         completion:^(BOOL finished) {
+                             if (completion) {
+                                 completion(finished);
+                             }
+                         }];
+    });
+}
+
+#pragma mark - set and get
+
+- (void)setShow:(BOOL)show {
+    self.hidden = !show;
+    if (_show != show) {
+        _show = show;
+        if (_show) {
+            [_scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
+            [_scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+            [_scrollView addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
+        }
+        else {
+            [_scrollView removeObserver:self forKeyPath:@"contentOffset"];
+            [_scrollView removeObserver:self forKeyPath:@"contentSize"];
+            [_scrollView removeObserver:self forKeyPath:@"frame"];
+        }
+    }
+}
+
+- (BOOL)show {
+    return _show;
+}
+
+- (void)setState:(MQPullToRefreshState)state {
+    if (_state != state) {
+        if ([_delegate respondsToSelector:@selector(pullToRefreshView:willChangeState:)]) {
+            [_delegate pullToRefreshView:self willChangeState:state];
+        }
+        _state = state;
+        switch (state) {
+            case MQPullToRefreshStateNormal:
+                [UIView animateWithDuration:1
+                                      delay:0
+                                    options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
+                                 animations:^{
+                                     _scrollView.contentInset = UIEdgeInsetsZero;
+                                 }
+                                 completion:^(BOOL finished) {
+                                     [self setNeedsLayout];
+                                     [self layoutIfNeeded];
+                                 }];
+                break;
+            case MQPullToRefreshStateRefreshing:
+                [self adjusetContentInset:UIEdgeInsetsMake(_triggerDistance, 0, 0, 0) animated:YES completion:nil];
+                if (_requestRefreshBlock) {
+                    _requestRefreshBlock();
+                }
+            case MQPullToRefreshStateWillRefresh:
+            case MQPullToRefreshStateRefreshFailed:
+            case MQPullToRefreshStateRefreshSucceed:
+                [self setNeedsLayout];
+                [self layoutIfNeeded];
+            default:
+                break;
+        }
+
+        if ([_delegate respondsToSelector:@selector(pullToRefreshView:didChangeState:)]) {
+            [_delegate pullToRefreshView:self didChangeState:state];
+        }
+    }
 }
 
 @end

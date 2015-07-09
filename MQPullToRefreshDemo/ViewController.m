@@ -98,9 +98,8 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (IBAction)refreshAction:(id)sender {
+    [_scrollView.pullToRefreshView refresh];
 }
 
 - (void)dealloc {
