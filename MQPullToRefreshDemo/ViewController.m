@@ -63,7 +63,7 @@
     
     //  3.  bash config
     [_scrollView addActionHandlerOnPullToRefreshView:MQPullToRefreshTypeTop
-                                     triggerDistance:20
+                                     triggerDistance:33
                                  requestRefreshBlock:^
     {
         NSLog(@"let go and request refresh");

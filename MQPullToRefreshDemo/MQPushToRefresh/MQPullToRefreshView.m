@@ -155,6 +155,7 @@
         if (_state == MQPullToRefreshStateRefreshing) {
             CGFloat offsetY;
             offsetY = MIN(beyondDistance, _triggerDistance);
+            NSLog(@"offsetY = %f", offsetY);
             _scrollView.contentInset = UIEdgeInsetsMake(offsetY, 0, 0, 0);
         }
         else {

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D40F84211B4EA579004FD250 /* MQPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = D40F841E1B4EA579004FD250 /* MQPullToRefreshView.m */; };
+		D40F84221B4EA579004FD250 /* UIScrollView+MQPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = D40F84201B4EA579004FD250 /* UIScrollView+MQPullToRefresh.m */; };
 		D4B77B811ABAE2370064171D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B77B801ABAE2370064171D /* main.m */; };
 		D4B77B841ABAE2370064171D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B77B831ABAE2370064171D /* AppDelegate.m */; };
 		D4B77B871ABAE2370064171D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B77B861ABAE2370064171D /* ViewController.m */; };
@@ -14,8 +16,6 @@
 		D4B77B8C1ABAE2370064171D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4B77B8B1ABAE2370064171D /* Images.xcassets */; };
 		D4B77B8F1ABAE2370064171D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4B77B8D1ABAE2370064171D /* LaunchScreen.xib */; };
 		D4B77B9B1ABAE2370064171D /* MQPullToRefreshDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B77B9A1ABAE2370064171D /* MQPullToRefreshDemoTests.m */; };
-		D4B77BA61ABAE25C0064171D /* UIScrollView+MQPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B77BA51ABAE25C0064171D /* UIScrollView+MQPullToRefresh.m */; };
-		D4B77BA91ABAE3B60064171D /* MQPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B77BA81ABAE3B60064171D /* MQPullToRefreshView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +29,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D40F841D1B4EA579004FD250 /* MQPullToRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPullToRefreshView.h; sourceTree = "<group>"; };
+		D40F841E1B4EA579004FD250 /* MQPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPullToRefreshView.m; sourceTree = "<group>"; };
+		D40F841F1B4EA579004FD250 /* UIScrollView+MQPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MQPullToRefresh.h"; sourceTree = "<group>"; };
+		D40F84201B4EA579004FD250 /* UIScrollView+MQPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MQPullToRefresh.m"; sourceTree = "<group>"; };
 		D4B77B7B1ABAE2370064171D /* MQPullToRefreshDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MQPullToRefreshDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4B77B7F1ABAE2370064171D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4B77B801ABAE2370064171D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -42,10 +46,6 @@
 		D4B77B941ABAE2370064171D /* MQPullToRefreshDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MQPullToRefreshDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4B77B991ABAE2370064171D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4B77B9A1ABAE2370064171D /* MQPullToRefreshDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MQPullToRefreshDemoTests.m; sourceTree = "<group>"; };
-		D4B77BA41ABAE25C0064171D /* UIScrollView+MQPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MQPullToRefresh.h"; sourceTree = "<group>"; };
-		D4B77BA51ABAE25C0064171D /* UIScrollView+MQPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MQPullToRefresh.m"; sourceTree = "<group>"; };
-		D4B77BA71ABAE3B60064171D /* MQPullToRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPullToRefreshView.h; sourceTree = "<group>"; };
-		D4B77BA81ABAE3B60064171D /* MQPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPullToRefreshView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +66,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D40F841C1B4EA579004FD250 /* MQPushToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				D40F841D1B4EA579004FD250 /* MQPullToRefreshView.h */,
+				D40F841E1B4EA579004FD250 /* MQPullToRefreshView.m */,
+				D40F841F1B4EA579004FD250 /* UIScrollView+MQPullToRefresh.h */,
+				D40F84201B4EA579004FD250 /* UIScrollView+MQPullToRefresh.m */,
+			);
+			path = MQPushToRefresh;
+			sourceTree = "<group>";
+		};
 		D4B77B721ABAE2370064171D = {
 			isa = PBXGroup;
 			children = (
@@ -87,14 +98,11 @@
 		D4B77B7D1ABAE2370064171D /* MQPullToRefreshDemo */ = {
 			isa = PBXGroup;
 			children = (
+				D40F841C1B4EA579004FD250 /* MQPushToRefresh */,
 				D4B77B821ABAE2370064171D /* AppDelegate.h */,
 				D4B77B831ABAE2370064171D /* AppDelegate.m */,
 				D4B77B851ABAE2370064171D /* ViewController.h */,
 				D4B77B861ABAE2370064171D /* ViewController.m */,
-				D4B77BA41ABAE25C0064171D /* UIScrollView+MQPullToRefresh.h */,
-				D4B77BA51ABAE25C0064171D /* UIScrollView+MQPullToRefresh.m */,
-				D4B77BA71ABAE3B60064171D /* MQPullToRefreshView.h */,
-				D4B77BA81ABAE3B60064171D /* MQPullToRefreshView.m */,
 				D4B77B881ABAE2370064171D /* Main.storyboard */,
 				D4B77B8B1ABAE2370064171D /* Images.xcassets */,
 				D4B77B8D1ABAE2370064171D /* LaunchScreen.xib */,
@@ -229,9 +237,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4B77BA91ABAE3B60064171D /* MQPullToRefreshView.m in Sources */,
+				D40F84221B4EA579004FD250 /* UIScrollView+MQPullToRefresh.m in Sources */,
+				D40F84211B4EA579004FD250 /* MQPullToRefreshView.m in Sources */,
 				D4B77B871ABAE2370064171D /* ViewController.m in Sources */,
-				D4B77BA61ABAE25C0064171D /* UIScrollView+MQPullToRefresh.m in Sources */,
 				D4B77B841ABAE2370064171D /* AppDelegate.m in Sources */,
 				D4B77B811ABAE2370064171D /* main.m in Sources */,
 			);
