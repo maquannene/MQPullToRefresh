@@ -11,7 +11,7 @@
 @interface MQPullToRefreshView ()
 
 {
-  @private
+@private
     UIScrollView *_scrollView;
     BOOL _show;
 }
@@ -25,6 +25,7 @@
 @synthesize show = _show;
 
 - (void)dealloc {
+    [self setShow:NO];
     [_customViewArray release];
     [super dealloc];
 }
@@ -79,10 +80,10 @@
         [self scrollViewDidScroll:[[change valueForKey:NSKeyValueChangeNewKey] CGPointValue]];
     }
     if ([keyPath isEqualToString:@"contentSize"]) {
-//        NSLog(@"  contentSize = %@", NSStringFromCGSize([[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue]));
+        //        NSLog(@"  contentSize = %@", NSStringFromCGSize([[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue]));
     }
     if ([keyPath isEqualToString:@"frame"]) {
-//        NSLog(@"  frame = %@", NSStringFromCGRect([[change valueForKey:NSKeyValueChangeNewKey] CGRectValue]));
+        //        NSLog(@"  frame = %@", NSStringFromCGRect([[change valueForKey:NSKeyValueChangeNewKey] CGRectValue]));
     }
 }
 
@@ -115,7 +116,7 @@
         }
     }
     else {
-    
+        
     }
 }
 
@@ -139,7 +140,7 @@
         [subView removeFromSuperview];
     }
     view.frame = CGRectMake((self.frame.size.width - view.frame.size.width) / 2,
-                            self.frame.size.height - view.frame.size.height,
+                            (self.frame.size.height - view.frame.size.height) / 2,
                             view.frame.size.width,
                             view.frame.size.height);
     [self addSubview:view];
@@ -193,7 +194,7 @@
         _state = state;
         switch (state) {
             case MQPullToRefreshStateNormal:
-                [UIView animateWithDuration:1
+                [UIView animateWithDuration:0.3
                                       delay:0
                                     options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
                                  animations:^{
@@ -217,7 +218,7 @@
             default:
                 break;
         }
-
+        
         if ([_delegate respondsToSelector:@selector(pullToRefreshView:didChangeState:)]) {
             [_delegate pullToRefreshView:self didChangeState:state];
         }
